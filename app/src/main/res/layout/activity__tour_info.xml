@@ -46,6 +46,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:name="com.example.administrator.mobile.fragment.Fragment_mapinfo"
+        android:background="#FFFFFF"
         tools:layout="@layout/activity__tour_info"
         ></fragment>
 
