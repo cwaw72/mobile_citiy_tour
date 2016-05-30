@@ -21,13 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LoginActivity" >
-        </activity>
-        <activity
-            android:name=".RegisterActivity" >
-        </activity>
-        <activity android:name=".activity.Activity_Tour"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".activity.Activity_Tour" />
+        <activity android:name=".activity.Activity_Tour_info" />
+        <activity android:name=".fragment.Fragment_mapinfo" />
+        <activity android:name=".fragment.Fragment_textinfo"></activity>
     </application>
 
 </manifest>

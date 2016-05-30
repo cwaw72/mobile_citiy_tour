@@ -4,10 +4,13 @@ package com.example.administrator.mobile.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.mobile.R;
+import com.example.administrator.mobile.RegisterActivity;
 
 public class Activity_Tour extends Activity {
 
@@ -36,10 +39,48 @@ public class Activity_Tour extends Activity {
         Glide.with(getApplicationContext()).load(BugGung).into(p3);
         Glide.with(getApplicationContext()).load(SeoulTower).into(p4);
 
+        p1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Activity_Tour.this, Activity_Tour_info.class);
+                intent.putExtra("place_name","seoul city tour!!");
+
+                startActivityForResult(intent,0);
+            }
+        });
+        p2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Activity_Tour.this, Activity_Tour_info.class);
+                startActivity(intent);
+            }
+        });
+        p3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Activity_Tour.this, Activity_Tour_info.class);
+                startActivity(intent);
+            }
+        });
+        p4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Activity_Tour.this, Activity_Tour_info.class);
+                startActivity(intent);
+            }
+        });
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode==RESULT_OK){
+            if(requestCode == 0){
+                Toast.makeText(getApplicationContext(), "you visited "+data.getStringExtra("place_name"), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
