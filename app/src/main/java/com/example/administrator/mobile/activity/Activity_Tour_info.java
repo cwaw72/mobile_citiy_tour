@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.administrator.mobile.R;
 import com.example.administrator.mobile.fragment.Fragment_mapinfo;
 import com.example.administrator.mobile.fragment.Fragment_textinfo;
+import com.google.android.gms.maps.MapFragment;
 
 public class Activity_Tour_info extends ActionBarActivity {
 
@@ -70,12 +71,13 @@ public class Activity_Tour_info extends ActionBarActivity {
 
     public void selectFrag(int select){
         Fragment fr;
+        MapFragment mMapFragment = MapFragment.newInstance();
 
 
         if(select == 1){
             fr = new Fragment_textinfo();
         }else {
-            fr = new Fragment_mapinfo();
+            fr = mMapFragment;
         }
 
         FragmentManager fm = getFragmentManager();

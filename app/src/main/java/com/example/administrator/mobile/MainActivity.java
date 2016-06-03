@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -140,19 +141,28 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             System.out.println("Resulted Value: " + result);
+
             if(result.equals("") || result == null){
                 Toast.makeText(MainActivity.this, "Server connection failed", Toast.LENGTH_LONG).show();
                 return;
             }
-            System.out.println("Returned Json jsonResult2222 " + result);
+
+            String data[] = new String[100];
+            //문자 확인;
+            StringTokenizer tokens = new StringTokenizer(result,"[]");
+            for(int i = 0; tokens.hasMoreElements(); i++) {
+                data[i] = tokens.nextToken();
+            }
+            System.out.println("tokens : " + data[1]);
 
             int jsonResult = returnParsedJsonObject(result);
             System.out.println("Resulted jsonResult: " + jsonResult);
-            if(jsonResult == 0){
+
+            if(data[1].equals("0")){
                 Toast.makeText(MainActivity.this, "Invalid username or password", Toast.LENGTH_LONG).show();
                 return;
             }
-            if(jsonResult == 1){
+            if(data[1].equals("1")){
                 Intent intent = new Intent(MainActivity.this, Activity_Tour.class);
                 intent.putExtra("USEREMAIL", enteredUserEmail);
                 intent.putExtra("MESSAGE", "You have been successfully login");
