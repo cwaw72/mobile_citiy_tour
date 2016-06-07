@@ -30,4 +30,5 @@ public class Activity_map extends Activity {
 
         map.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
     }
+
 }
