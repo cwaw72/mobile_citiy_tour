@@ -43,15 +43,18 @@ import java.util.StringTokenizer;
 
 public class Activity_Tour extends Activity {
 
-    private static String DongDaeMun = "http://contents.visitseoul.net/file_save/art_img/2015/03/20/20150320141418_D.jpg";
-    private static String MungDong = "http://contents.visitseoul.net/images/contents/9000/large/kr/581_1.jpg";
-    private static String BugGung = "http://contents.visitseoul.net/file_save/art_img/2011/04/12/20110412181814_D.jpg";
-    private static String SeoulTower = "http://contents.visitseoul.net/images/contents/9000/large/kr/166_1.jpg";
-
     ImageView p1;
     ImageView p2;
     ImageView p3;
     ImageView p4;
+
+    String p1_info[];
+    String p2_info[];
+    String p3_info[];
+    String p4_info[];
+
+    private final String serverUrl = "http://52.79.197.58/conv/index.php";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,17 +66,36 @@ public class Activity_Tour extends Activity {
         p3 = (ImageView) findViewById(R.id.place_3);
         p4 = (ImageView) findViewById(R.id.place_4);
 
-        Glide.with(getApplicationContext()).load(DongDaeMun).into(p1);
-        Glide.with(getApplicationContext()).load(MungDong).into(p2);
-        Glide.with(getApplicationContext()).load(BugGung).into(p3);
-        Glide.with(getApplicationContext()).load(SeoulTower).into(p4);
+        final Intent intent = getIntent();
+        String p = intent.getStringExtra("USEREMAIL");
+
+        //p1
+        if( (int)p.charAt(0) - 48 == 0){
+            p1.setVisibility(View.GONE);
+        }
+        //p2
+        if( (int)p.charAt(1) - 48 == 0){
+            p2.setVisibility(View.GONE);
+        }
+        //p3
+        if( (int)p.charAt(2) - 48 == 0){
+            p3.setVisibility(View.GONE);
+
+        }
+        //p4
+        if( (int)p.charAt(3) - 48 == 0){
+            p4.setVisibility(View.GONE);
+        }
+
+        AsyncDataClass asyncRequestObject = new AsyncDataClass();
+        asyncRequestObject.execute(serverUrl, "getInfo");
 
         p1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Activity_Tour.this, Activity_Tour_info.class);
-                intent.putExtra("place_name","seoul city tour!!");
-
+                intent.putExtra("place_name","동대문");
+                intent.putExtra("p",0);
                 startActivityForResult(intent,0);
             }
         });
@@ -81,21 +103,28 @@ public class Activity_Tour extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Activity_Tour.this, Activity_Tour_info.class);
-                startActivity(intent);
+                intent.putExtra("place_name","명동");
+                intent.putExtra("p",1);
+                startActivityForResult(intent,0);
+
             }
         });
         p3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Activity_Tour.this, Activity_Tour_info.class);
-                startActivity(intent);
+                intent.putExtra("place_name","경복궁");
+                intent.putExtra("p",2);
+                startActivityForResult(intent,0);
             }
         });
         p4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Activity_Tour.this, Activity_Tour_info.class);
-                startActivity(intent);
+                intent.putExtra("place_name","N서울타워");
+                intent.putExtra("p",3);
+                startActivityForResult(intent,0);
             }
         });
      }
@@ -109,7 +138,7 @@ public class Activity_Tour extends Activity {
 
         if(resultCode==RESULT_OK){
             if(requestCode == 0){
-                Toast.makeText(getApplicationContext(), "you visited "+data.getStringExtra("place_name"), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "You've just Watched "+data.getStringExtra("place_name"), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -129,12 +158,12 @@ public class Activity_Tour extends Activity {
             String jsonResult = "";
             try {
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-                nameValuePairs.add(new BasicNameValuePair("email", params[1]));
-                nameValuePairs.add(new BasicNameValuePair("password", params[2]));
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                nameValuePairs.add(new BasicNameValuePair("id", params[1]));
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
 
                 HttpResponse response = httpClient.execute(httpPost);
                 jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
+
                 System.out.println("Returned Json object2 " + jsonResult.toString());
 
 
@@ -161,11 +190,21 @@ public class Activity_Tour extends Activity {
 
             String data[] = new String[100];
             //문자 확인;
+            p1_info = new String[4];
+            p2_info = new String[4];
+            p3_info = new String[4];
+            p4_info = new String[4];
+
             StringTokenizer tokens = new StringTokenizer(result,"[]");
             for(int i = 0; tokens.hasMoreElements(); i++) {
                 data[i] = tokens.nextToken();
+                System.out.println(i+"tokens : " + data[i]);
             }
-            System.out.println("tokens : " + data[1]);
+
+            Glide.with(getApplicationContext()).load(data[3]).into(p1);
+            Glide.with(getApplicationContext()).load(data[13]).into(p2);
+            Glide.with(getApplicationContext()).load(data[23]).into(p3);
+            Glide.with(getApplicationContext()).load(data[33]).into(p4);
 
             int jsonResult = returnParsedJsonObject(result);
             System.out.println("Resulted jsonResult: " + jsonResult);

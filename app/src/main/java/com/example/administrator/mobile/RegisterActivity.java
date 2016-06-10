@@ -171,17 +171,20 @@ public class RegisterActivity extends ActionBarActivity {
                 Toast.makeText(RegisterActivity.this, "Server connection failed", Toast.LENGTH_LONG).show();
                 return;
             }
-            int jsonResult = returnParsedJsonObject(result);
-            if(jsonResult == 0){
-                Toast.makeText(RegisterActivity.this, "Invalid username or password or email", Toast.LENGTH_LONG).show();
-                return;
+
+            if(result.contains("register")){
+                if(result.contains("0")){
+                    Toast.makeText(RegisterActivity.this, "Invalid username or password or email", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(result.contains("1")){
+                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                    intent.putExtra("USEREMAIL", enteredUseremail);
+                    intent.putExtra("MESSAGE", "You have been successfully Registered");
+                    startActivity(intent);
+                }
             }
-            if(jsonResult == 1){
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                intent.putExtra("USEREMAIL", enteredUseremail);
-                intent.putExtra("MESSAGE", "You have been successfully Registered");
-                startActivity(intent);
-            }
+
         }
         private StringBuilder inputStreamToString(InputStream is) {
             String rLine = "";

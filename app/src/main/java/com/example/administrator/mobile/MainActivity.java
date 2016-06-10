@@ -164,7 +164,7 @@ public class MainActivity extends ActionBarActivity {
             }
             if(data[1].equals("1")){
                 Intent intent = new Intent(MainActivity.this, Activity_Tour.class);
-                intent.putExtra("USEREMAIL", enteredUserEmail);
+                intent.putExtra("USEREMAIL", data[3]+ data[5]+ data[7]+ data[9]);
                 intent.putExtra("MESSAGE", "You have been successfully login");
                 startActivity(intent);
             }
